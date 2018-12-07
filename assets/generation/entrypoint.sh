@@ -28,6 +28,7 @@ show_help() {
     bash          : run bash
     eval          : eval shell command
 
+    load          : dump a bunch of simple entities into kernel
     register      : register types in /assets
     generate      : create mock types from registered assets
 
@@ -41,6 +42,10 @@ case "$1" in
 
     eval )
         eval "${@:2}"
+    ;;
+
+    load )
+        python load.py "${@:2}"
     ;;
 
     register )

@@ -35,10 +35,10 @@ def env(key):
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-with open('%s/assets/generation/assets/sample-names.json' % HERE) as f:
+with open('%s/data/sample-names.json' % HERE) as f:
     NAMES = json.load(f)
 
-with open('%s/assets/generation/assets/sample-locations.json' % HERE) as f:
+with open('%s/data/sample-locations.json' % HERE) as f:
     POP_CENTERS = json.load(f)
 
 
