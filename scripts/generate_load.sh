@@ -20,5 +20,10 @@
 #
 set -Eeuo pipefail
 
+# Optional command line arguments
+# 0 - Number of entities / topic    | default = 100
+# 1 - Number of topics created      | default = 1
+# 2 - Run Number                    | default = 1
+
 docker-compose -f ./docker-compose-generation.yml build
 docker-compose -f ./docker-compose-generation.yml run assets load ${@:1}
