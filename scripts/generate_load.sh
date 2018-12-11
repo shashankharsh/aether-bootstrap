@@ -20,47 +20,5 @@
 #
 set -Eeuo pipefail
 
-
-show_help() {
-    echo """
-    Commands
-    ----------------------------------------------------------------------------
-    bash          : run bash
-    eval          : eval shell command
-
-    load          : dump a bunch of simple entities into kernel optional args [ #entities/topic | topics | run_number ]
-    register      : register types in /assets
-    generate      : create mock types from registered assets
-
-    """
-}
-
-case "$1" in
-    bash )
-        bash
-    ;;
-
-    eval )
-        eval "${@:2}"
-    ;;
-
-    load )
-        python load.py "${@:2}"
-    ;;
-
-    register )
-        python register.py "${@:2}"
-    ;;
-
-    generate )
-        python populate.py "${@:2}"
-    ;;
-
-    help)
-        show_help
-    ;;
-
-    *)
-        show_help
-    ;;
-esac
+docker-compose -f ./docker-compose-generation.yml build
+docker-compose -f ./docker-compose-generation.yml run assets load ${@:1}
