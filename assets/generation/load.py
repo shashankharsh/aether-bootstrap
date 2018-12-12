@@ -90,7 +90,8 @@ def load_handler(process_id):
         
     ps_id = project_schema.id
     for x in range(LOAD_ENTITIES):
-        log.debug(f'{process_id} : {x}')
+        if (x % 100 == 0):
+            log.debug(f'{name} : {x}')
         payload = gen()
         data = {
             "id": payload['id'],
