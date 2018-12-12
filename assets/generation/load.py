@@ -90,7 +90,7 @@ def load_handler(process_id):
         
     ps_id = project_schema.id
     for x in range(LOAD_ENTITIES):
-        if (x % 100 == 0):
+        if (x % (LOAD_ENTITIES / 10) == 0):
             log.debug(f'{name} : {x}')
         payload = gen()
         data = {
@@ -123,7 +123,6 @@ if __name__ == "__main__":
     url = env('KERNEL_URL')
     username = env('KERNEL_USER')
     password = env('KERNEL_PASSWORD')
-    log.debug(args)
     LOAD_ENTITIES = check_arg(1, args) or 100
     LOAD_PARALLELISM = check_arg(2, args) or 1
     RUN_NUMBER = check_arg(3, args) or 1
