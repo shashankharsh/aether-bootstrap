@@ -30,7 +30,11 @@ from data import simple_schema
 from aether.client import Client, AetherAPIException
 
 log = logging.getLogger("AssetGeneration:")
-
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter(
+    '%(asctime)s [AssetGeneration:] %(levelname)-8s %(message)s'))
+log.addHandler(handler)
+log.setLevel(logging.DEBUG)
 
 def env(key):
     return os.environ.get(key, False)
@@ -49,8 +53,9 @@ def log_completion(i):
 
 def load_handler(process_id):
     # create artifacts
-    log.info(f'{process_id} started')
+    
     name = f'testchannel{RUN_NUMBER}{process_id}'
+    log.info(f'{name} started')
     try:
         definition = dict(simple_schema)
         def gen():
@@ -100,9 +105,10 @@ def load_handler(process_id):
 
 def check_arg(pos, args):
     try:
-        if len(args) > (pos + 1) and isinstance(int(args[pos]), int):
+        if len(args) > (pos) and isinstance(int(args[pos]), int):
             return int(args[pos])
     except ValueError:
+        log.error(args[pos] + ' was a bad value for position ' + pos)
         return None
 
 if __name__ == "__main__":
@@ -116,14 +122,15 @@ if __name__ == "__main__":
     url = env('KERNEL_URL')
     username = env('KERNEL_USER')
     password = env('KERNEL_PASSWORD')
+    log.debug(args)
     LOAD_ENTITIES = check_arg(1, args) or 100
     LOAD_PARALLELISM = check_arg(2, args) or 1
     RUN_NUMBER = check_arg(3, args) or 1
+
+    log.debug(f'{LOAD_PARALLELISM} threads creating {LOAD_ENTITIES} for run# {RUN_NUMBER}')
 
     global client
     client = Client(url, username, password)
     global project
     project = [i for i in client.projects.paginated('list')][0]
     create_load(client, project)
-
-
