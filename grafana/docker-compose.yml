@@ -1,0 +1,25 @@
+
+version: '3'
+
+networks:
+  aether:
+    external:
+      name: aether_internal
+
+services:
+  
+  grafana:
+    image: grafana/grafana:latest
+    command: server
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./config.env
+    volumes:
+      - ./entrypoint.sh:/app/entrypoint.sh
+      - ./config/grafana.ini:/etc/grafana/grafana.ini
+      - ./config/dashboards:/var/lib/grafana/dashboards
+      - ./config/datasources:/etc/grafana/datasources
+      - ./config/plugins:/var/lib/grafana/plugins
+    networks:
+     - aether
