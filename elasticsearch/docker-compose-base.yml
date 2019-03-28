@@ -7,6 +7,9 @@ services:
       - "9300:9300"
     environment:
       discovery.type: single-node
+      logger.level: error
+      logger.deprecation.level: error
+
 
   kibana-base:
     image: docker.elastic.co/kibana/kibana-oss:6.5.3
@@ -16,7 +19,7 @@ services:
       kibana.index: "aether-demo-2"
 
   es-consumer-base:
-    image: ehealthafrica/aether-elasticsearch-consumer:1.1.0
+    image: ehealthafrica/aether-elasticsearch-consumer:1.1.1
     stdin_open: true
     ports:
       - "9009:9009"
@@ -25,5 +28,6 @@ services:
      - ./es_index:/code/es_index
 
     environment:
+     - LOG_LEVEL=ERROR
      - PYTHONUNBUFFERED=0
     command: start
